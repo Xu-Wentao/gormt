@@ -82,32 +82,23 @@ func (m *_Model) genTableElement(cols []ColumnsInfo) (el []genstruct.GenElement)
 			tmp.SetName(getCamelName(v.Name))
 			tmp.SetNotes(v.Notes)
 			tmp.SetType(getTypeName(v.Type, v.IsNull))
-			for _, v1 := range v.Index {
-				switch v1.Key {
-				// case ColumnsKeyDefault:
-				case ColumnsKeyPrimary: // primary key.主键
-					tmp.AddTag(_tagGorm, "primary_key")
-					isPK = true
-				case ColumnsKeyUnique: // unique key.唯一索引
-					tmp.AddTag(_tagGorm, "unique")
-				case ColumnsKeyIndex: // index key.复合索引
-					tmp.AddTag(_tagGorm, getUninStr("index", ":", v1.KeyName))
-				case ColumnsKeyUniqueIndex: // unique index key.唯一复合索引
-					tmp.AddTag(_tagGorm, getUninStr("unique_index", ":", v1.KeyName))
-				}
-			}
+			//for _, v1 := range v.Index {
+			//	switch v1.Key {
+			//	// case ColumnsKeyDefault:
+			//	case ColumnsKeyPrimary: // primary key.主键
+			//		tmp.AddTag(_tagGorm, "primary_key")
+			//		isPK = true
+			//	case ColumnsKeyUnique: // unique key.唯一索引
+			//		tmp.AddTag(_tagGorm, "unique")
+			//	case ColumnsKeyIndex: // index key.复合索引
+			//		tmp.AddTag(_tagGorm, getUninStr("index", ":", v1.KeyName))
+			//	case ColumnsKeyUniqueIndex: // unique index key.唯一复合索引
+			//		tmp.AddTag(_tagGorm, getUninStr("unique_index", ":", v1.KeyName))
+			//	}
+			//}
 		}
 
 		if len(v.Name) > 0 {
-			// not simple output
-			if !config.GetSimple() {
-				tmp.AddTag(_tagGorm, "column:"+v.Name)
-				tmp.AddTag(_tagGorm, "type:"+v.Type)
-				if !v.IsNull {
-					tmp.AddTag(_tagGorm, "not null")
-				}
-			}
-
 			// json tag
 			if config.GetIsWEBTag() {
 				if isPK && config.GetIsWebTagPkHidden() {
@@ -116,6 +107,17 @@ func (m *_Model) genTableElement(cols []ColumnsInfo) (el []genstruct.GenElement)
 					tmp.AddTag(_tagJSON, mybigcamel.UnMarshal(v.Name))
 				}
 			}
+			// not simple output
+			if !config.GetSimple() {
+				tmp.AddTag(_tagGorm, "column:"+v.Name)
+				tmp.AddTag(_tagGorm, "type:"+v.Type)
+				if !v.IsNull {
+					tmp.AddTag(_tagGorm, "not null")
+				}
+			} else {
+				tmp.AddTag(_tagGorm, "column:"+v.Name)
+			}
+
 		}
 
 		el = append(el, tmp)

@@ -5,10 +5,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/xxjwxc/gormt/data/config"
-	"github.com/xxjwxc/gormt/data/view/model"
 	"github.com/xxjwxc/public/mysqldb"
 	"github.com/xxjwxc/public/tools"
+
+	"github.com/xxjwxc/gormt/data/config"
+	"github.com/xxjwxc/gormt/data/view/model"
 )
 
 // MySQLModel mysql model from IModel

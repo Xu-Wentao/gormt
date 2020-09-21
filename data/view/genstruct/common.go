@@ -40,11 +40,12 @@ func (e *GenElement) AddTag(k string, v string) {
 func (e *GenElement) Generate() string {
 	tag := ""
 	if e.Tags != nil {
-		var ks []string
+		var ks sort.StringSlice
 		for k := range e.Tags {
 			ks = append(ks, k)
 		}
-		sort.Strings(ks)
+		//sort.Strings(ks)
+		sort.Sort(sort.Reverse(ks))
 
 		var tags []string
 		for _, v := range ks {
@@ -71,7 +72,7 @@ func (e *GenElement) GenerateColor() string {
 		for k := range e.Tags {
 			ks = append(ks, k)
 		}
-		sort.Strings(ks)
+		//sort.Strings(ks)
 
 		var tags []string
 		for _, v := range ks {
